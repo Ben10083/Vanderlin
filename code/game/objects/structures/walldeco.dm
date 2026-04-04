@@ -144,30 +144,30 @@
 		to_chat(human, span_warning("That person is already an outlaw!"))
 		return FALSE
 
-	if(is_lord_job(human.mind.assigned_role)) // The Monarch is never wrong.
+	if(human.job_type == /datum/job/lord) // The Monarch is never wrong.
 		return TRUE
 
-	if(istype(potential_outlaw.mind.assigned_role, /datum/job/royalknight))
+	if(potential_outlaw.job_type == /datum/job/royalknight)
 		to_chat(human, span_warning("You would need to be the Monarch to declare their own knights an Outlaw..."))
 		return FALSE
 
-	if(is_consort_job(potential_outlaw.mind.assigned_role))
+	if(potential_outlaw.job_type == /datum/job/consort)
 		to_chat(human, span_warning("The Monarch's own Consort?! You wouldn't dare."))
 		return FALSE
 
-	if(is_hand_job(potential_outlaw.mind.assigned_role))
-		to_chat(human, span_warning("This is (officially at least) the Monarch's most trusted advisor, you cannot declare them an Outlaw."))
+	if(potential_outlaw.job_type == /datum/job/hand)
+		to_chat(human, span_warning("This is (officially at least) the Monarch's most trusted advisor, you cannot declare them an Outlaw!"))
 		return FALSE
 
-	if(HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_BLOOD) || HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_BLOOD))
+	if(HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_BLOOD) || HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_POWER))
 		to_chat(human, span_warning("Only the Monarch can declare someone of noble blood an Outlaw!"))
 		return FALSE
 
-	if(is_priest_job(potential_outlaw.mind.assigned_role))
+	if(potential_outlaw.job_type == /datum/job/priest)
 		to_chat(human, span_warning("You accuse their Eminence themselves?! Remove that thought before Astrata smites you where you stand!"))
 		return FALSE
 
-	if((is_monk_job(potential_outlaw.mind.assigned_role)) || istype(potential_outlaw.mind.assigned_role, /datum/job/templar) || istype(potential_outlaw.mind.assigned_role, /datum/job/undertaker || istype(potential_outlaw.mind.assigned_role, /datum/job/gmtemplar)))
+	if(potential_outlaw.job_type == /datum/job/monk || potential_outlaw.job_type == /datum/job/templar || potential_outlaw.job_type == /datum/job/gmtemplar || potential_outlaw.job_type == /datum/job/undertaker)
 		to_chat(human, span_warning("Only the Monarch can declare one of the Clergy an outlaw..."))
 		return FALSE
 
