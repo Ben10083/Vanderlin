@@ -178,7 +178,7 @@
 		to_chat(human, span_warning("[potential_outlaw.real_name] is (officially at least) the Monarch's most trusted advisor, you cannot declare them an Outlaw!"))
 		return FALSE
 
-	if(HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_BLOOD) || HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_POWER))
+	if(potential_outlaw.is_noble())
 		to_chat(human, span_warning("Only the Monarch can declare someone of noble blood an Outlaw!"))
 		return FALSE
 
