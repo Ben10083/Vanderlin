@@ -1,7 +1,10 @@
+/// List of people excommunicated by the Church. Takes `real_name`
 GLOBAL_LIST_EMPTY(excommunicated_players)
+/// List of people that have been cursed by the curse or otherwise declared a Heretic. Takes `real_name`
 GLOBAL_LIST_EMPTY(heretical_players)
+/// List of people with `Inquisitorial Suspicion` vice. Takes `real_name`
 GLOBAL_LIST_EMPTY(inquis_suspect_players)
-/// Associative list, takes [real_name] = crime
+/// Associative list of players that have been declared an Outlaw, takes [real_name] = crime
 GLOBAL_ALIST_EMPTY(outlawed_players)
-/// Associative list, takes [realname] = list(crime, requester)
+/// Associative list of players that were requested to be declared an Outlaw, takes [realname] = list(crime, requester)
 GLOBAL_ALIST_EMPTY(outlaw_requested_players)
