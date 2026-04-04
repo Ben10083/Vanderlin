@@ -122,9 +122,10 @@
 			to_chat(human, span_info("With that done, now you need to speak with someone with authority to approve your request..."))
 
 			// Notify captain and apply the status_effect
-			for(var/mob/living/carbon/human/captain in GLOB.human_list)
+			for(var/mob/living/carbon/human/captain in GLOB.player_list)
 				if(captain.mind.assigned_role == "Captain")
 					captain.apply_status_effect(/datum/status_effect/has_outlaw_requests)
+					send_ooc_note("You sense that there is a new Outlaw request on the Wanted Posters", name = captain.real_name)
 
 /// Checks if person has the trait `TRAIT_CAN_DECLARE_OUTLAW` or if they are other special roles, returns a define at `walldeco.dm` based on result
 /obj/structure/fluff/walldeco/wantedposter/proc/determine_outlaw_power(mob/living/carbon/human/human)
@@ -132,7 +133,7 @@
 	if(GLOB.outlawed_players?[human.real_name])
 		return NO_OUTLAW_POWER
 	if(HAS_TRAIT(human, TRAIT_CAN_DECLARE_OUTLAW))
-		return FULL_OUTLAW_POWER
+		return LIMITED_OUTLAW_POWER
 
 	if(human.job == "City Watch Lieutenant" || human.job == "Serjeant-at-Arms")
 		return LIMITED_OUTLAW_POWER
