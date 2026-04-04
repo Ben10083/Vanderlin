@@ -448,6 +448,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		return
 
 	victim.job = new_pos
+	victim.job_type = SSjob.GetJobType(new_pos)
 	victim.mind?.set_assigned_role(new_pos)
 	if(ishuman(victim))
 		var/mob/living/carbon/human/human = victim
