@@ -135,7 +135,7 @@
 	if(GLOB.outlawed_players?[human.real_name])
 		return NO_OUTLAW_POWER
 	if(HAS_TRAIT(human, TRAIT_CAN_DECLARE_OUTLAW))
-		return LIMITED_OUTLAW_POWER
+		return LIMITED_OUTLAW_POWER // TODO change back to FULL before end
 
 	if((human.job == "City Watch Lieutenant") || (human.job == "Serjeant-at-Arms"))
 		return LIMITED_OUTLAW_POWER
