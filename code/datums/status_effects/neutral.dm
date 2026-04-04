@@ -171,5 +171,7 @@
 	if(!length(GLOB.outlaw_requested_players))
 		L.remove_status_effect(/datum/status_effect/has_outlaw_requests) // This is done as an 'emergency', idealy this is removed from whatever cleared the last entry
 		return TRUE
-
-	to_chat(L, span_notice("There are about \Roman[length(GLOB.outlaw_requested_players)] requests for me to review."))
+	if(length(GLOB.outlaw_requested_players) > 1)
+		to_chat(L, span_notice("There are about \Roman[length(GLOB.outlaw_requested_players)] requests for me to review."))
+	else
+		to_chat(L, span_notice("There is an Outlaw request I need to review."))
