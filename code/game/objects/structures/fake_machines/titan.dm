@@ -367,7 +367,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 		reset_mode()
 		return FALSE
-	var/crimes = tgui_input_text(user, "What is the reason they are outlawed, leave blank for 'General Crimes'", "Outlaw's Crimes", max_length = 50, multiline = TRUE)
+	var/crimes = tgui_input_text(user, "What is the reason they are outlawed, leave blank for 'General Crimes'", "Outlaw's Crimes", max_length = 75)
 	if(crimes)
 		GLOB.outlawed_players[message] = crimes
 		priority_announce("For [crimes], [message] has been declared an outlaw and must be captured or slain.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")

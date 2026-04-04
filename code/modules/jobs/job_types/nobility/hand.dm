@@ -31,11 +31,12 @@
 	honorary_f = "Lady"
 
 	mind_traits = list(
-		TRAIT_KNOW_KEEP_DOORS
+		TRAIT_KNOW_KEEP_DOORS,
 	)
 	traits = list(
 		TRAIT_NOBLE_BLOOD,
-		TRAIT_NOBLE_POWER
+		TRAIT_NOBLE_POWER,
+		TRAIT_CAN_DECLARE_OUTLAW
 	)
 
 /datum/outfit/hand
