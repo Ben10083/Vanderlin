@@ -47,7 +47,7 @@
 			to_chat(user, span_warning("I need to get closer to see the scoundrels' faces!"))
 
 /obj/structure/fluff/walldeco/wantedposter/attackby(obj/item/P, mob/user, list/modifiers)
-	if(typesof(P, /obj/item/paper) && ishuman(user))
+	if(ispath(P, /obj/item/paper) && ishuman(user))
 		return declare_outlaw(P, user)
 
 	else
@@ -148,10 +148,10 @@
 		to_chat(human, span_warning("You realize that someone has submitted a request to make them an Outlaw..."))
 		return FALSE
 
-	if(human.job_type == /datum/job/lord) // The Monarch is never wrong.
-		return TRUE
+	//if(human.job_type == /datum/job/lord) // The Monarch is never wrong.
+		//return TRUE
 
-	if(potential_outlaw.job_type == /datum/job/royalknight)
+	if(potential_outlaw.job_type == /datum/job/royalknight || ispath(potential_outlaw.job_type, /datum/job/advclass/royalknight))
 		to_chat(human, span_warning("You would need to be the Monarch to declare their own knights an Outlaw..."))
 		return FALSE
 
@@ -159,11 +159,11 @@
 		to_chat(human, span_warning("You would need to be the Monarch to declare their own Captain an Outlaw..."))
 		return FALSE
 
-	if(potential_outlaw.job_type == /datum/job/consort)
+	if(potential_outlaw.job_type == /datum/job/consort || ispath(potential_outlaw.job_type, /datum/job/advclass/consort))
 		to_chat(human, span_warning("[potential_outlaw.real_name]... Monarch's own Consort?! You wouldn't dare."))
 		return FALSE
 
-	if(potential_outlaw.job_type == /datum/job/hand)
+	if(potential_outlaw.job_type == /datum/job/hand || ispath(potential_outlaw.job_type, /datum/job/advclass/hand))
 		to_chat(human, span_warning("[potential_outlaw.real_name] is (officially at least) the Monarch's most trusted advisor, you cannot declare them an Outlaw!"))
 		return FALSE
 

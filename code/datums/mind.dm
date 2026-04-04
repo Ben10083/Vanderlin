@@ -786,6 +786,9 @@ GLOBAL_LIST_EMPTY(personal_objective_minds)
 	if(assigned_role == new_role)
 		return assigned_role
 	. = assigned_role
+	if(current)
+		current.job = new_role
+		current.job_type = SSjob.GetJobType(new_role)
 	assigned_role = new_role
 
 /mob/proc/sync_mind()
