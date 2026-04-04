@@ -151,6 +151,10 @@
 		to_chat(human, span_warning("You would need to be the Monarch to declare their own knights an Outlaw..."))
 		return FALSE
 
+	if(potential_outlaw.job_type == /datum/job/captain)
+		to_chat(human, span_warning("You would need to be the Monarch to declare their own Captain an Outlaw..."))
+		return FALSE
+
 	if(potential_outlaw.job_type == /datum/job/consort)
 		to_chat(human, span_warning("The Monarch's own Consort?! You wouldn't dare."))
 		return FALSE
