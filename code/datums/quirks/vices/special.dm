@@ -479,7 +479,7 @@
 
 	var/mob/living/carbon/human/H = owner
 
-	GLOB.outlawed_players[H.real_name] = "General Crimes VICE"
+	GLOB.outlawed_players[H.real_name] = "General Crimes VICE" //TODO HAVE THIS BE CUSTOM, FIND OUT HOW
 	// GLOB.outlawed_players[H.real_name] = "General Crimes VICE2" TODO: How does it handle dupes?
 	to_chat(H, span_boldwarning("Whether for crimes I did or was accused of, I have been declared an outlaw!"))
 
