@@ -125,7 +125,7 @@
 			for(var/mob/living/carbon/human/captain in GLOB.human_list)
 				if(!captain.mind)
 					continue
-				if(captain.mind.assigned_role == /datum/job/captain) // Not working
+				if(istype(captain.mind.assigned_role,/datum/job/captain)) // Not working
 					send_ooc_note("You sense that there is a new Outlaw request on the Wanted Posters", name = captain.real_name)
 					captain.apply_status_effect(/datum/status_effect/has_outlaw_requests)
 

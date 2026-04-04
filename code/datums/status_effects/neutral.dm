@@ -162,7 +162,7 @@
 	desc = "I should check a wanted poster for who my subordinates want me to declare an Outlaw..."
 	icon_state = "outlaw_request"
 
-/atom/movable/screen/alert/has_outlaw_requests/Click()
+/atom/movable/screen/alert/status_effect/has_outlaw_requests/Click()
 	var/mob/living/L = usr
 
 	if(!L.has_status_effect(/datum/status_effect/has_outlaw_requests))
