@@ -118,7 +118,7 @@
 			else
 				priority_announce("[possible_outlaw.real_name] has been declared an outlaw and must be captured or slain.", "[human.real_name], The [human.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
 		else
-			GLOB.outlaw_requested_players[possible_outlaw.real_name] = crimes
+			GLOB.outlaw_requested_players[possible_outlaw.real_name] = list(crimes, human.real_name)
 			to_chat(human, span_info("With that done, now you need to speak with someone with authority to approve your request..."))
 
 /// Checks if person has the trait `TRAIT_CAN_DECLARE_OUTLAW` or if they are other special roles, returns a define at `walldeco.dm` based on result
