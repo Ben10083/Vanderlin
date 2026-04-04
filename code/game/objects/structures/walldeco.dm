@@ -160,11 +160,11 @@
 		return FALSE
 
 	if(potential_outlaw.job_type == /datum/job/consort)
-		to_chat(human, span_warning("The Monarch's own Consort?! You wouldn't dare."))
+		to_chat(human, span_warning("[potential_outlaw.real_name]... Monarch's own Consort?! You wouldn't dare."))
 		return FALSE
 
 	if(potential_outlaw.job_type == /datum/job/hand)
-		to_chat(human, span_warning("This is (officially at least) the Monarch's most trusted advisor, you cannot declare them an Outlaw!"))
+		to_chat(human, span_warning("[potential_outlaw.real_name] is (officially at least) the Monarch's most trusted advisor, you cannot declare them an Outlaw!"))
 		return FALSE
 
 	if(HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_BLOOD) || HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_POWER))
