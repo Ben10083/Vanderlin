@@ -121,6 +121,11 @@
 			GLOB.outlaw_requested_players[possible_outlaw.real_name] = list(crimes, human.real_name)
 			to_chat(human, span_info("With that done, now you need to speak with someone with authority to approve your request..."))
 
+			// Notify captain and apply the status_effect
+			for(var/mob/living/carbon/human/captain in GLOB.human_list)
+				if(captain.mind.assigned_role == "Captain")
+					captain.apply_status_effect(/datum/status_effect/has_outlaw_requests)
+
 /// Checks if person has the trait `TRAIT_CAN_DECLARE_OUTLAW` or if they are other special roles, returns a define at `walldeco.dm` based on result
 /obj/structure/fluff/walldeco/wantedposter/proc/determine_outlaw_power(mob/living/carbon/human/human)
 	// Outlaws do not have power over themselves.
@@ -150,6 +155,8 @@
 
 	//if(human.job_type == /datum/job/lord) // The Monarch is never wrong.
 		//return TRUE
+
+	message_admins("[potential_outlaw.real_name] has job_type of [potential_outlaw.job_type].")
 
 	if(potential_outlaw.job_type == /datum/job/royalknight || istype(potential_outlaw.job_type, /datum/job/advclass/royalknight))
 		to_chat(human, span_warning("You would need to be the Monarch to declare their own knights an Outlaw..."))
