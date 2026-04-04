@@ -17,7 +17,7 @@
 		user_mob.cursed_freak_out()
 		return
 
-	if(user_mob.real_name in GLOB.outlawed_players)
+	if(GLOB.outlawed_players?[user_mob.real_name])
 		say("OUTLAW DETECTED! REFUSING SERVICE!")
 		return
 
@@ -85,7 +85,7 @@
 				H.cursed_freak_out()
 				return
 
-			if(user.real_name in GLOB.outlawed_players)
+			if(GLOB.outlawed_players?[user.real_name])
 				say("OUTLAW DETECTED! REFUSING SERVICE!")
 				return
 

@@ -42,7 +42,7 @@
 	var/list/outlaws = list()
 
 	for(var/mob/living/carbon/human/outlaw in GLOB.human_list)
-		if(outlaw.real_name in GLOB.outlawed_players)
+		if(GLOB.outlawed_players?[outlaw.real_name])
 			var/icon/credit_icon = SScrediticons.get_credit_icon(outlaw, TRUE)
 			if(credit_icon)
 				outlaws += list(list(
@@ -54,7 +54,7 @@
 		to_chat(user, span_warning("There are no wanted criminals at the moment..."))
 		return
 
-	if(user.real_name in GLOB.outlawed_players)
+	if(GLOB.outlawed_players?[user.real_name])
 		var/list/funny = list("Yup. My face is on there.", "Wait a minute... That's me!", "Look at that handsome devil...", "At least I am wanted by someone...", "My chin can't be that big... right?")
 		to_chat(user, span_notice("[pick(funny)]"))
 		if(!HAS_MIND_TRAIT(user, TRAIT_KNOWBANDITS))

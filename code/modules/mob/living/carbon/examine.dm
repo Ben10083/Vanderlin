@@ -161,8 +161,9 @@
 			. += span_redtextbig("HERETIC! SHAME!")
 
 		// Outlaws
-		if(HAS_MIND_TRAIT(user, TRAIT_KNOWBANDITS) && (real_name in GLOB.outlawed_players))
+		if(HAS_MIND_TRAIT(user, TRAIT_KNOWBANDITS) && (GLOB.outlawed_players?[real_name]))
 			. += span_boldred(mind?.special_role == "Bandit" ? "BANDIT!" : "OUTLAW!")
+			. += span_boldred("[GLOB.outlawed_players[real_name]]")
 
 		// Court Agents
 		var/list/known_frumentarii = user.mind?.cached_frumentarii

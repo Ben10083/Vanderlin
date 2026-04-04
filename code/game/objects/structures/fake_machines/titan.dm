@@ -1,4 +1,4 @@
-GLOBAL_LIST_EMPTY(outlawed_players)
+GLOBAL_ALIST_EMPTY(outlawed_players)
 GLOBAL_LIST_EMPTY(lord_decrees)
 GLOBAL_LIST_INIT(laws_of_the_land, initialize_laws_of_the_land())
 GLOBAL_LIST_EMPTY(roundstart_court_agents)
@@ -348,13 +348,13 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 /obj/structure/fake_machine/titan/proc/declare_outlaw(mob/living/carbon/human/user, message)
 	message = SANITIZE_HEAR_MESSAGE(html_decode(message)) // We only state this if someone's name matches. Should be safer to decode as we have protections with names
 
-	if(message in GLOB.outlawed_players)
+	if(GLOB.outlawed_players?[message])
 		say("That person is already an outlaw!")
 		playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 		reset_mode()
 		return FALSE
 	var/found = FALSE
-	for(var/mob/living/carbon/human/to_be_outlawed in GLOB.player_list)
+	for(var/mob/living/carbon/human/to_be_outlawed in GLOB.human_list)
 		if(to_be_outlawed.real_name == message)
 			found = TRUE
 		if(to_be_outlawed.job == "Faceless One")
@@ -367,8 +367,13 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 		reset_mode()
 		return FALSE
-	GLOB.outlawed_players |= message
-	priority_announce("[message] has been declared an outlaw and must be captured or slain.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+	var/crimes = tgui_input_text(user, "What is the reason they are outlawed, leave blank for 'General Crimes'", "Outlaw's Crimes", max_length = 50, multiline = TRUE)
+	if(crimes)
+		GLOB.outlawed_players[message] = crimes
+		priority_announce("For [crimes], [message] has been declared an outlaw and must be captured or slain.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+	else
+		GLOB.outlawed_players[message] = "General Crimes"
+		priority_announce("[message] has been declared an outlaw and must be captured or slain.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
 	reset_mode()
 	return TRUE
 
@@ -376,7 +381,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 /obj/structure/fake_machine/titan/proc/pardon_outlaw(mob/living/carbon/human/user, message)
 	message = SANITIZE_HEAR_MESSAGE(html_decode(message)) // We only state this if someone's name matches. Should be safer to decode as we have protections with names
 
-	if(message in GLOB.outlawed_players)
+	if(GLOB.outlawed_players?[message])
 		GLOB.outlawed_players -= message
 		priority_announce("[message] is no longer an outlaw in Vanderlin lands.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
 		reset_mode()
