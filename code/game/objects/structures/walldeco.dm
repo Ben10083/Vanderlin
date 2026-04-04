@@ -144,6 +144,10 @@
 		to_chat(human, span_warning("That person is already an outlaw!"))
 		return FALSE
 
+	if(GLOB.outlaw_requested_players?[potential_outlaw.real_name])
+		to_chat(human, span_warning("You realize that someone has submitted a request to make them an Outlaw..."))
+		return FALSE
+
 	if(human.job_type == /datum/job/lord) // The Monarch is never wrong.
 		return TRUE
 
