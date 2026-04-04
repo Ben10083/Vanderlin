@@ -122,10 +122,12 @@
 			to_chat(human, span_info("With that done, now you need to speak with someone with authority to approve your request..."))
 
 			// Notify captain and apply the status_effect
-			for(var/mob/living/carbon/human/captain in GLOB.player_list)
-				if(captain.mind.assigned_role == "Captain")
-					captain.apply_status_effect(/datum/status_effect/has_outlaw_requests)
+			for(var/mob/living/carbon/human/captain in GLOB.human_list)
+				if(!captain.mind)
+					continue
+				if(captain.mind.assigned_role == /datum/job/captain) // Not working
 					send_ooc_note("You sense that there is a new Outlaw request on the Wanted Posters", name = captain.real_name)
+					captain.apply_status_effect(/datum/status_effect/has_outlaw_requests)
 
 /// Checks if person has the trait `TRAIT_CAN_DECLARE_OUTLAW` or if they are other special roles, returns a define at `walldeco.dm` based on result
 /obj/structure/fluff/walldeco/wantedposter/proc/determine_outlaw_power(mob/living/carbon/human/human)
@@ -135,7 +137,7 @@
 	if(HAS_TRAIT(human, TRAIT_CAN_DECLARE_OUTLAW))
 		return LIMITED_OUTLAW_POWER
 
-	if(human.job == "City Watch Lieutenant" || human.job == "Serjeant-at-Arms")
+	if((human.job == "City Watch Lieutenant") || (human.job == "Serjeant-at-Arms"))
 		return LIMITED_OUTLAW_POWER
 
 	if(human.honorary == "Serjeant")
@@ -154,12 +156,13 @@
 		to_chat(human, span_warning("You realize that someone has submitted a request to make them an Outlaw..."))
 		return FALSE
 
+	//TODO COMMENT THIS BACK IN AT END
 	//if(human.job_type == /datum/job/lord) // The Monarch is never wrong.
 		//return TRUE
 
 	message_admins("[potential_outlaw.real_name] has job_type of [potential_outlaw.job_type].")
 
-	if(potential_outlaw.job_type == /datum/job/royalknight || istype(potential_outlaw.job_type, /datum/job/advclass/royalknight))
+	if((potential_outlaw.job_type == /datum/job/royalknight) || (istype(potential_outlaw.job_type, /datum/job/advclass/royalknight)))
 		to_chat(human, span_warning("You would need to be the Monarch to declare their own knights an Outlaw..."))
 		return FALSE
 
@@ -167,11 +170,11 @@
 		to_chat(human, span_warning("You would need to be the Monarch to declare their own Captain an Outlaw..."))
 		return FALSE
 
-	if(potential_outlaw.job_type == /datum/job/consort || istype(potential_outlaw.job_type, /datum/job/advclass/consort))
+	if((potential_outlaw.job_type == /datum/job/consort) || (istype(potential_outlaw.job_type, /datum/job/advclass/consort)))
 		to_chat(human, span_warning("[potential_outlaw.real_name]... Monarch's own Consort?! You wouldn't dare."))
 		return FALSE
 
-	if(potential_outlaw.job_type == /datum/job/hand || istype(potential_outlaw.job_type, /datum/job/advclass/hand))
+	if((potential_outlaw.job_type == /datum/job/hand) || (istype(potential_outlaw.job_type, /datum/job/advclass/hand)))
 		to_chat(human, span_warning("[potential_outlaw.real_name] is (officially at least) the Monarch's most trusted advisor, you cannot declare them an Outlaw!"))
 		return FALSE
 
