@@ -1,4 +1,3 @@
-GLOBAL_ALIST_EMPTY(outlawed_players)
 GLOBAL_LIST_EMPTY(lord_decrees)
 GLOBAL_LIST_INIT(laws_of_the_land, initialize_laws_of_the_land())
 GLOBAL_LIST_EMPTY(roundstart_court_agents)

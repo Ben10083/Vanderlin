@@ -76,12 +76,12 @@
 	var/possible_outlaw = SANITIZE_HEAR_MESSAGE(tgui_input_text(human, "Who do you want to be an Outlaw?", "The Accused", max_length = 50, encode = FALSE))
 	var/found = FALSE
 
-	if(GLOB.outlawed_players?[possible_outlaw])
-		to_chat(human, span_warning("That person is already an outlaw!"))
+	if(!can_be_outlawed(human, possible_outlaw))
 		return
 
 	for(var/mob/living/carbon/human/to_be_outlawed in GLOB.human_list)
 		if(to_be_outlawed.real_name == possible_outlaw)
+			possible_outlaw = to_be_outlawed.real_name
 			found = TRUE
 		if(to_be_outlawed.job == "Faceless One")
 			to_chat(human, span_warning("Who? That person doesn't exist!"))
@@ -116,10 +116,11 @@
 			GLOB.outlaw_requested_players[possible_outlaw] = crimes
 			to_chat(human, span_info("With that done, now you need to speak with someone with authority to approve your request..."))
 
+/// Checks if person has the trait `TRAIT_CAN_DECLARE_OUTLAW` or if they are other special roles, returns a define at `walldeco.dm` based on result
 /obj/structure/fluff/walldeco/wantedposter/proc/determine_outlaw_power(mob/living/carbon/human/human)
 	// Outlaws do not have power over themselves.
-	//if(GLOB.outlawed_players?[human.real_name])
-		//return NO_OUTLAW_POWER
+	if(GLOB.outlawed_players?[human.real_name])
+		return NO_OUTLAW_POWER
 	if(HAS_TRAIT(human, TRAIT_CAN_DECLARE_OUTLAW))
 		return FULL_OUTLAW_POWER
 
@@ -131,6 +132,43 @@
 
 	// At this stage, person is a NOBODY
 	return NO_OUTLAW_POWER
+
+/// This proc checks if person is already an outlaw, or if the `potential_outlaw` is 'restricted' from being an Outlaw unless declared by the Monarch
+/obj/structure/fluff/walldeco/wantedposter/proc/can_be_outlawed(mob/living/carbon/human/human, mob/living/carbon/human/potential_outlaw)
+	if(GLOB.outlawed_players?[potential_outlaw])
+		to_chat(human, span_warning("That person is already an outlaw!"))
+		return FALSE
+
+	if(is_lord_job(human.mind.assigned_role)) // The Monarch is never wrong.
+		return TRUE
+
+	if(istype(potential_outlaw.mind.assigned_role, /datum/job/royalknight))
+		to_chat(human, span_warning("You would need to be the Monarch to declare their own knights an Outlaw..."))
+		return FALSE
+
+	if(is_consort_job(potential_outlaw.mind.assigned_role))
+		to_chat(human, span_warning("The Monarch's own Consort?! You wouldn't dare."))
+		return FALSE
+
+	if(is_hand_job(potential_outlaw.mind.assigned_role))
+		to_chat(human, span_warning("This is (officially at least) the Monarch's most trusted advisor, you cannot declare them an Outlaw."))
+		return FALSE
+
+	if(HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_BLOOD) || HAS_TRAIT(potential_outlaw, TRAIT_NOBLE_BLOOD))
+		to_chat(human, span_warning("Only the Monarch can declare someone of noble blood an Outlaw!"))
+		return FALSE
+
+	if(is_priest_job(potential_outlaw.mind.assigned_role))
+		to_chat(human, span_warning("You accuse their Eminence themselves?! Remove that thought before Astrata smites you where you stand!"))
+		return FALSE
+
+	if((is_monk_job(potential_outlaw.mind.assigned_role)) || istype(potential_outlaw.mind.assigned_role, /datum/job/templar) || istype(potential_outlaw.mind.assigned_role, /datum/job/undertaker || istype(potential_outlaw.mind.assigned_role, /datum/job/gmtemplar)))
+		to_chat(human, span_warning("Only the Monarch can declare one of the Clergy an outlaw..."))
+		return FALSE
+
+	return TRUE
+
+
 
 /obj/structure/fluff/walldeco/wantedposter/proc/show_outlaw_headshot(mob/living/carbon/human/user)
 	var/list/outlaws = list()
