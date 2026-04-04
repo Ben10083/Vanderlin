@@ -73,8 +73,9 @@
 		to_chat(human, span_warning("How are you going to sketch an outlaw without having something to write with?"))
 		return
 
-	var/possible_outlaw = tgui_input_text(human, "Who do you want to be an Outlaw?", "The Accused", max_length = 50, encode = FALSE)
+	var/possible_outlaw = SANITIZE_HEAR_MESSAGE(tgui_input_text(human, "Who do you want to be an Outlaw?", "The Accused", max_length = 50, encode = FALSE))
 	var/found = FALSE
+
 	if(GLOB.outlawed_players?[possible_outlaw])
 		to_chat(human, span_warning("That person is already an outlaw!"))
 		return
@@ -85,6 +86,7 @@
 		if(to_be_outlawed.job == "Faceless One")
 			to_chat(human, span_warning("Who? That person doesn't exist!"))
 			return
+
 	if(!found)
 		to_chat(human, span_warning("That person doesn't exist!"))
 		return
@@ -92,8 +94,12 @@
 	// Person found, now get reason
 	var/crimes = tgui_input_text(human, "Leave blank for 'General Crimes'", "Reason (Optional)", max_length = 75)
 
+	if(!human.Adjacent(src)) // Not actually working???
+		to_chat(human, span_warning("You need to stand near \the [src]!"))
+		return
+
 	human.visible_message("[human] starts to sketch out someone's mugshot on \the [paper]", "You start to sketch out a mugshot of [possible_outlaw] on \the [paper]")
-	if(!do_after(human, 15 SECONDS, progress = TRUE, display_over_user = TRUE))
+	if(!do_after(human, 15 SECONDS, src, progress = TRUE, display_over_user = TRUE))
 		to_chat(human, span_warning("You need to stand still to make an accurate sketch!"))
 		return
 	else
@@ -112,8 +118,8 @@
 
 /obj/structure/fluff/walldeco/wantedposter/proc/determine_outlaw_power(mob/living/carbon/human/human)
 	// Outlaws do not have power over themselves.
-	if(GLOB.outlawed_players?[human.real_name])
-		return NO_OUTLAW_POWER
+	//if(GLOB.outlawed_players?[human.real_name])
+		//return NO_OUTLAW_POWER
 	if(HAS_TRAIT(human, TRAIT_CAN_DECLARE_OUTLAW))
 		return FULL_OUTLAW_POWER
 
