@@ -5,6 +5,6 @@ GLOBAL_LIST_EMPTY(heretical_players)
 /// List of people with `Inquisitorial Suspicion` vice. Takes `real_name`
 GLOBAL_LIST_EMPTY(inquis_suspect_players)
 /// Associative list of players that have been declared an Outlaw, takes [real_name] = crime
-GLOBAL_ALIST_EMPTY(outlawed_players)
+GLOBAL_LIST_EMPTY(outlawed_players)
 /// Associative list of players that were requested to be declared an Outlaw, takes [realname] = list(crime, requester)
-GLOBAL_ALIST_EMPTY(outlaw_requested_players)
+GLOBAL_LIST_EMPTY(outlaw_requested_players)
