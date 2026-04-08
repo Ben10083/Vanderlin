@@ -184,14 +184,14 @@
 	return TRUE
 
 /// Takes key of entry in `GLOB.outlaw_requested_players` and has them declared an outlaw, with entry removed at end
-/obj/structure/fluff/walldeco/wantedposter/proc/approve_request(var/key)
+/obj/structure/fluff/walldeco/wantedposter/proc/approve_request(var/key, var/mob/living/carbon/human/approver)
 	var/crimes = GLOB.outlaw_requested_players[key] // TODO THIS WILL NOT WORK, FIND WAY TO GRAB FIRST ENTRY OF THIS LIST!!!!!
-
 	GLOB.outlawed_players[key] = crimes
+
 	if(crimes != "General Crimes")
-		priority_announce("For [crimes], [possible_outlaw.real_name] has been declared an outlaw and must be captured or slain.", "[human.real_name], The [human.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+		priority_announce("For [crimes], [key] has been declared an outlaw and must be captured or slain.", "[approver.real_name], The [approver.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
 	else
-		priority_announce("[possible_outlaw.real_name] has been declared an outlaw and must be captured or slain.", "[human.real_name], The [human.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+		priority_announce("[key] has been declared an outlaw and must be captured or slain.", "[approver.real_name], The [approver.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
 
 
 	GLOB.outlaw_requested_players -= key
