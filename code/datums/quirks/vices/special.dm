@@ -458,7 +458,7 @@
 
 /datum/quirk/vice/outlaw
 	name = "Outlaw"
-	desc = "You begin your journey declared an outlaw by those who rule these lands, there is likely a notable mammon reward for your capture..."
+	desc = "You begin your journey declared an outlaw by those who rule these lands, there is likely a notable mammon reward for your capture or head..."
 	point_value = 2
 	customization_type = QUIRK_TEXT
 	customization_label = "What are my crimes?"
