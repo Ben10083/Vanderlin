@@ -185,7 +185,8 @@
 
 /// Takes key of entry in `GLOB.outlaw_requested_players` and has them declared an outlaw, with entry removed at end
 /obj/structure/fluff/walldeco/wantedposter/proc/approve_request(var/key, var/mob/living/carbon/human/approver)
-	var/crimes = GLOB.outlaw_requested_players[key] // TODO THIS WILL NOT WORK, FIND WAY TO GRAB FIRST ENTRY OF THIS LIST!!!!!
+	var/list/outlaw_entry = GLOB.outlaw_requested_players[key]
+	var/crimes = outlaw_entry[1]
 	GLOB.outlawed_players[key] = crimes
 
 	if(crimes != "General Crimes")
