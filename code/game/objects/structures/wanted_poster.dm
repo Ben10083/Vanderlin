@@ -183,7 +183,38 @@
 
 	return TRUE
 
+/// Takes key of entry in `GLOB.outlaw_requested_players` and has them declared an outlaw, with entry removed at end
+/obj/structure/fluff/walldeco/wantedposter/proc/approve_request(var/key)
+	var/crimes = GLOB.outlaw_requested_players[key] // TODO THIS WILL NOT WORK, FIND WAY TO GRAB FIRST ENTRY OF THIS LIST!!!!!
 
+	GLOB.outlawed_players[key] = crimes
+	if(crimes != "General Crimes")
+		priority_announce("For [crimes], [possible_outlaw.real_name] has been declared an outlaw and must be captured or slain.", "[human.real_name], The [human.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+	else
+		priority_announce("[possible_outlaw.real_name] has been declared an outlaw and must be captured or slain.", "[human.real_name], The [human.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
+
+
+	GLOB.outlaw_requested_players -= key
+
+	if(!length(GLOB.outlaw_requested_players))
+		// Remove status for each Captain
+		for(var/mob/living/carbon/human/captain in GLOB.human_list)
+			if(!captain.mind)
+				continue
+			if(istype(captain.mind.assigned_role,/datum/job/captain)) // Not working
+				captain.remove_status_effect(/datum/status_effect/has_outlaw_requests)
+
+/// Takes key of entry in `GLOB.outlaw_requested_players` and removes it
+/obj/structure/fluff/walldeco/wantedposter/proc/deny_request(var/key)
+	GLOB.outlaw_requested_players -= key
+
+	if(!length(GLOB.outlaw_requested_players))
+		// Remove status for each Captain
+		for(var/mob/living/carbon/human/captain in GLOB.human_list)
+			if(!captain.mind)
+				continue
+			if(istype(captain.mind.assigned_role,/datum/job/captain)) // Not working
+				captain.remove_status_effect(/datum/status_effect/has_outlaw_requests)
 
 /obj/structure/fluff/walldeco/wantedposter/proc/show_outlaw_headshot(mob/living/carbon/human/user)
 	var/list/outlaws = list()
