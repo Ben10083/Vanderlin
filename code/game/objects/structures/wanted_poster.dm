@@ -143,13 +143,14 @@
 		return FALSE
 
 	if(GLOB.outlaw_requested_players?[potential_outlaw.real_name])
-		to_chat(human, span_warning("You realize that someone has submitted a request to make them an Outlaw..."))
+		to_chat(human, span_warning("You realize that someone has already placed a sketch of them on \the [src] for them to be declared an Outlaw."))
 		return FALSE
 
 	//TODO COMMENT THIS BACK IN AT END
 	//if(human.job_type == /datum/job/lord) // The Monarch is never wrong.
 		//return TRUE
 
+	message_admins("[potential_outlaw.real_name] has parent_job of [potential_outlaw.job_type.parent_job]")
 	message_admins("[potential_outlaw.real_name] has job_type of [potential_outlaw.job_type].")
 
 	if((potential_outlaw.job_type == /datum/job/royalknight) || (istype(potential_outlaw.job_type, /datum/job/advclass/royalknight)))
