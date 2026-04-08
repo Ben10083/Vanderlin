@@ -116,6 +116,7 @@
 					continue
 				if(istype(captain.mind.assigned_role,/datum/job/captain)) // Not working
 					send_ooc_note("You sense that there is a new Outlaw request on the Wanted Posters", name = captain.real_name)
+					playsound(captain, 'sound/misc/mail.ogg', 100, FALSE, -1)
 					captain.apply_status_effect(/datum/status_effect/has_outlaw_requests)
 
 /// Checks if person has the trait `TRAIT_CAN_DECLARE_OUTLAW` or if they are other special roles, returns a define at `wanted_poster.dm` based on result
