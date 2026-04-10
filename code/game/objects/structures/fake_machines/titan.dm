@@ -414,7 +414,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 /obj/structure/fake_machine/titan/proc/change_position(mob/living/carbon/human/user)
 	if(!Adjacent(user))
 		return
-	var/list/mob/possible_mobs = orange(2, src)
+	var/list/mob/possible_mobs = viewers(2, src)
 	if(!possible_mobs)
 		playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 		say("No one around!")
@@ -423,7 +423,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 	say("Who should change their post?")
 	playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
 
-	var/mob/victim = input(user, "Who should change their post?", src, null) as null|mob in possible_mobs - user
+	var/mob/victim = tgui_input_list(user, "Who should change their post?", "Pick Person", (possible_mobs - user))
 	if(isnull(victim) || !Adjacent(user))
 		return
 
@@ -443,11 +443,15 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		/datum/job/innkeep_son::title,
 		/datum/job/bandit::title,
 	)
-	var/new_pos = input(user, "Select their new position", src, null) as anything in possible_positions
+	var/new_pos = tgui_input_list(user, "Select [victim.real_name]'s new position", "Selecting Position", possible_positions)
 	if(isnull(victim))
 		return
 
-	victim.mind?.set_assigned_role(new_pos)
+	if(victim.mind)
+		victim.mind?.set_assigned_role(new_pos) // This proc assigns job and job_type for us
+	else
+		victim.job = new_pos
+		victim.job_type = SSjob.GetJob(new_pos)
 	if(ishuman(victim))
 		var/mob/living/carbon/human/human = victim
 		if(!HAS_TRAIT(human, TRAIT_RECRUITED) && HAS_TRAIT(human, TRAIT_FOREIGNER))
@@ -473,12 +477,12 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		priority_announce("[regent.real_name] is no longer regent.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
 		SSticker.regent_mob = null
 		return TRUE
-	var/list/mob/living/carbon/possible_mobs = orange(2, src)
+	var/list/mob/living/carbon/possible_mobs = viewers(2, src)
 	if(!possible_mobs)
 		playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 		say("No one around!")
 		return
-	var/mob/living/carbon/new_regent = input(user, "Who will rule when you sleep?", src, null) as null|mob in possible_mobs - user
+	var/mob/living/carbon/new_regent = tgui_input_list(user, "Who will rule when you sleep?", "Pick a Regent", possible_mobs - user)
 	if(isnull(new_regent) || !Adjacent(user))
 		return
 	priority_announce("[new_regent.real_name] has been appointed regent.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")

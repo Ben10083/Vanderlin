@@ -151,6 +151,14 @@
 	//if(human.job_type == /datum/job/lord) // The Monarch is never wrong.
 		//return TRUE
 
+	if(potential_outlaw.job_type == /datum/job/lord)
+		to_chat(human, span_warning("You accuse \the [potential_outlaw.honorary][potential_outlaw.real_name]?! You fool!!"))
+		return FALSE
+
+	if(SSticker.regent_mob == potential_outlaw)
+		to_chat(human, span_warning("You can't accuse the Regent of being an Outlaw, they may become your Lord soon!"))
+		return FALSE
+
 	if((potential_outlaw.job_type == /datum/job/royalknight) || (ispath(potential_outlaw.job_type, /datum/job/advclass/royalknight)))
 		to_chat(human, span_warning("You would need to be the Monarch to declare one of their own knights an Outlaw..."))
 		return FALSE
@@ -160,7 +168,7 @@
 		return FALSE
 
 	if((potential_outlaw.job_type == /datum/job/consort) || (ispath(potential_outlaw.job_type, /datum/job/advclass/consort)))
-		to_chat(human, span_warning("[potential_outlaw.real_name]... Monarch's own Consort?! You wouldn't dare."))
+		to_chat(human, span_warning("[potential_outlaw.real_name]... the Monarch's own Consort?! You wouldn't dare."))
 		return FALSE
 
 	if((potential_outlaw.job_type == /datum/job/hand) || (ispath(potential_outlaw.job_type, /datum/job/advclass/hand)))
