@@ -121,11 +121,12 @@
 
 /// Checks if person has the trait `TRAIT_CAN_DECLARE_OUTLAW` or if they are other special roles, returns a define at `wanted_poster.dm` based on result
 /obj/structure/fluff/walldeco/wantedposter/proc/determine_outlaw_power(mob/living/carbon/human/human)
+	return LIMITED_OUTLAW_POWER
 	// Outlaws do not have power over themselves.
 	if(GLOB.outlawed_players?[human.real_name])
 		return NO_OUTLAW_POWER
 	if(HAS_TRAIT(human, TRAIT_CAN_DECLARE_OUTLAW))
-		return LIMITED_OUTLAW_POWER // TODO change back to FULL before end
+		return FULL_OUTLAW_POWER
 
 	if((human.job == "City Watch Lieutenant") || (human.job == "Serjeant-at-Arms"))
 		return LIMITED_OUTLAW_POWER
