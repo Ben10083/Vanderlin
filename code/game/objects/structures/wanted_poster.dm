@@ -151,11 +151,8 @@
 	//if(human.job_type == /datum/job/lord) // The Monarch is never wrong.
 		//return TRUE
 
-	message_admins("[potential_outlaw.real_name] has parent_job of [potential_outlaw.job_type.parent_job]")
-	message_admins("[potential_outlaw.real_name] has job_type of [potential_outlaw.job_type].")
-
 	if((potential_outlaw.job_type == /datum/job/royalknight) || (ispath(potential_outlaw.job_type, /datum/job/advclass/royalknight)))
-		to_chat(human, span_warning("You would need to be the Monarch to declare their own knights an Outlaw..."))
+		to_chat(human, span_warning("You would need to be the Monarch to declare one of their own knights an Outlaw..."))
 		return FALSE
 
 	if(potential_outlaw.job_type == /datum/job/captain)
