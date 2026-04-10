@@ -38,6 +38,12 @@
 /obj/structure/fluff/walldeco/wantedposter/attackby(obj/item/P, mob/user, list/modifiers)
 	if(istype(P, /obj/item/paper) && ishuman(user))
 		return declare_outlaw(P, user)
+	else if((istype(P, /obj/item/natural/feather) || istype(P, /obj/item/natural/thorn)) && ishuman(user))
+		// see if they have paper
+		for(var/obj/item/paper/paper in user.held_items)
+			return declare_outlaw(paper, user)
+		to_chat(user, span_warning("How are you going to sketch an outlaw without something to write on?"))
+		return
 
 	else
 		return ..()
