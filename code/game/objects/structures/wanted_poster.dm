@@ -197,7 +197,7 @@
 
 /// Takes key of entry in `GLOB.outlawed_players` and `person` to send feedback to, and sends `person` a chat message giving reason they are outlawed
 /obj/structure/fluff/walldeco/wantedposter/proc/display_reason(key, mob/living/person)
-	if(GLOB.outlawed_players?[key])
+	if(GLOB.outlawed_players?[key] && person)
 		to_chat(person, span_info("You read the poster, which states the following: <span class='bold'>[uppertext(key)]</span>, WANTED DEAD OR ALIVE FOR <span class='bold'>[uppertext(GLOB.outlawed_players?[key])]</span>."))
 
 /// Takes key of entry in `GLOB.outlaw_requested_players` and has them declared an outlaw, with entry removed at end
