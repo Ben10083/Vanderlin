@@ -108,6 +108,7 @@
 
 		if(outlaw_power == FULL_OUTLAW_POWER) // Declare them outlaw
 			GLOB.outlawed_players[possible_outlaw.real_name] = crimes
+
 			if(crimes != "General Crimes")
 				priority_announce("For [crimes], [possible_outlaw.real_name] has been declared an outlaw and must be captured or slain.", "[human.real_name], The [human.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
 			else
@@ -127,7 +128,6 @@
 
 /// Checks if person has the trait `TRAIT_CAN_DECLARE_OUTLAW` or if they are other special roles, returns a define at `wanted_poster.dm` based on result
 /obj/structure/fluff/walldeco/wantedposter/proc/determine_outlaw_power(mob/living/carbon/human/human)
-	return LIMITED_OUTLAW_POWER
 	// Outlaws do not have power over themselves.
 	if(GLOB.outlawed_players?[human.real_name])
 		return NO_OUTLAW_POWER
@@ -195,8 +195,13 @@
 
 	return TRUE
 
+/// Takes key of entry in `GLOB.outlawed_players` and `person` to send feedback to, and sends `person` a chat message giving reason they are outlawed
+/obj/structure/fluff/walldeco/wantedposter/proc/display_reason(key, mob/living/person)
+	if(GLOB.outlawed_players?[key])
+		to_chat(person, span_info("You read the poster, which states the following: <span class='bold'>[uppertext(key)]</span>, WANTED DEAD OR ALIVE FOR <span class='bold'>[uppertext(GLOB.outlawed_players?[key])]</span>."))
+
 /// Takes key of entry in `GLOB.outlaw_requested_players` and has them declared an outlaw, with entry removed at end
-/obj/structure/fluff/walldeco/wantedposter/proc/approve_request(var/key, var/mob/living/carbon/human/approver)
+/obj/structure/fluff/walldeco/wantedposter/proc/approve_request(key, mob/living/carbon/human/approver)
 	var/list/outlaw_entry = GLOB.outlaw_requested_players[key]
 	var/crimes = outlaw_entry[1]
 	GLOB.outlawed_players[key] = crimes
@@ -218,7 +223,7 @@
 				captain.remove_status_effect(/datum/status_effect/has_outlaw_requests)
 
 /// Takes key of entry in `GLOB.outlaw_requested_players` and removes it
-/obj/structure/fluff/walldeco/wantedposter/proc/deny_request(var/key)
+/obj/structure/fluff/walldeco/wantedposter/proc/deny_request(key)
 	GLOB.outlaw_requested_players -= key
 
 	if(!length(GLOB.outlaw_requested_players))
