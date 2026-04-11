@@ -197,7 +197,7 @@
 
 /// Takes key of entry in `GLOB.outlawed_players` and `person` to send feedback to, and sends `person` a chat message giving reason they are outlawed
 /obj/structure/fluff/walldeco/wantedposter/proc/display_reason(key, mob/living/person)
-	var/living/carbon/human/outlaw = null
+	var/mob/living/carbon/human/outlaw = null
 	for(var/mob/living/carbon/human/human in GLOB.human_list)
 		if(human.real_name == key)
 			outlaw = human
