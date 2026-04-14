@@ -428,7 +428,7 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 	say("Who should change their post?")
 	playsound(src, 'sound/misc/machinetalk.ogg', 100, FALSE, -1)
 
-	var/mob/living/carbon/victim = tgui_input_list(user, "Who should change their post?", src, possible_mobs)
+	var/mob/living/carbon/victim = tgui_input_list(user, "Who should change their post?", src, (possible_mobs - user))
 	if(!victim)
 		return
 	if(QDELETED(victim) || QDELETED(src) || QDELETED(user))
