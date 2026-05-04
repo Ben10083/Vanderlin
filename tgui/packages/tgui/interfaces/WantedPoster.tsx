@@ -26,6 +26,10 @@ type WantedPosterProps = {
   outlaw: Outlaw;
 };
 
+type RequestPosterProps = {
+  request: RequestOutlaw;
+}
+
 const DisplayOutlaws = (props) => {
   const { act, data } = useBackend<Data>();
   const { outlaws } = data;
