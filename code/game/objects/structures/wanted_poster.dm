@@ -14,6 +14,7 @@
 	icon_state = "wanted1"
 	layer = BELOW_MOB_LAYER
 	SET_BASE_PIXEL(0, 32)
+
 /obj/structure/fluff/walldeco/wantedposter/r
 	SET_BASE_PIXEL(32, 0)
 
