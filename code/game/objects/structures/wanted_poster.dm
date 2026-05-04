@@ -32,8 +32,49 @@
 		if(user.Adjacent(src))
 			var/mob/living/carbon/human/human_user = user
 			show_outlaw_headshot(human_user)
+			ui_interact(user)
 		else
 			to_chat(user, span_warning("I need to get closer to see the scoundrels' faces!"))
+
+/obj/structure/fluff/walldeco/wantedposter/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new /datum/tgui(user, src, "WantedPoster", name)
+		ui.set_autoupdate(FALSE)
+		ui.open()
+
+/obj/structure/fluff/walldeco/wantedposter/ui_data(mob/living/carbon/human/user)
+	var/list/data = list()
+	// we check if they are a Human to be able to open UI, we can assume they are one.
+	data["outlaw_power"] = determine_outlaw_power(user)
+
+	/// Grab Outlaws
+	data["outlaws"] = list()
+	for(var/mob/living/carbon/human/outlaw in GLOB.player_list) // player_list as `get_credit_icon()` requires a player anyways
+		if(GLOB.outlawed_players?[outlaw.real_name])
+			var/icon/credit_icon = SScrediticons.get_credit_icon(outlaw, TRUE)
+			if(credit_icon)
+				var/list/outlaw_data = list()
+				outlaw_data["name"] = outlaw.real_name
+				outlaw_data["icon"] = credit_icon
+				outlaw_data["reason"] = GLOB.outlawed_players[outlaw.real_name]
+
+				UNTYPED_LIST_ADD(data["outlaws"], outlaw_data)
+
+
+	/// Grab REQUESTED Outlaws
+	data["requested_outlaws"] = list()
+	for(var/mob/living/carbon/human/potential_outlaw in GLOB.player_list) // player_list as `get_credit_icon()` requires a player anyways
+		if(GLOB.outlaw_requested_players?[potential_outlaw.real_name])
+			var/icon/credit_icon = SScrediticons.get_credit_icon(potential_outlaw, TRUE)
+			if(credit_icon)
+				var/list/requested_outlaw_data = list()
+				requested_outlaw_data["name"] = potential_outlaw.real_name
+				requested_outlaw_data["icon"] = credit_icon
+				requested_outlaw_data["reason"] = GLOB.outlaw_requested_players[potential_outlaw.real_name][1] // Remember, outlaw_requested_players is a list(reason, requestee)
+				requested_outlaw_data["requestee"] = GLOB.outlaw_requested_players[potential_outlaw.real_name][2]
+
+				UNTYPED_LIST_ADD(data["requested_outlaws"], requested_outlaw_data)
 
 /obj/structure/fluff/walldeco/wantedposter/attackby(obj/item/P, mob/user, list/modifiers)
 	if(istype(P, /obj/item/paper) && ishuman(user))
@@ -247,7 +288,7 @@
 			if(credit_icon)
 				outlaws += list(list(
 					"name" = outlaw.real_name,
-					"icon" = credit_icon
+					"icon" = credit_icon,
 					"reason" = GLOB.outlawed_players[outlaw.real_name]
 				))
 
