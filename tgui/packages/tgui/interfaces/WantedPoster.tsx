@@ -1,15 +1,15 @@
 import { useBackend } from '../backend';
 import { useLocalState } from '../backend';
-import { Box, Button, DmIcon, Icon, Input, Stack, Tooltip } from 'tgui-core/components';
+import { Box, Button, DmIcon, Icon, Input, Section, Stack, Tooltip } from 'tgui-core/components';
 import { Window } from '../layouts';
 
-type WantedPosterOutlaw = {
+type Outlaw = {
   name: string;
   icon: string;
   reason: string;
 }
 
-type WantedPosterRequestOutlaw = {
+type RequestOutlaw = {
   name: string;
   icon: string;
   reason: string;
@@ -18,6 +18,45 @@ type WantedPosterRequestOutlaw = {
 
 type Data = {
   outlaw_power: number;
+  outlaws: Outlaw[];
+  requested_outlaws: RequestOutlaw[];
 };
 
+type WantedPosterProps = {
+  outlaw: Outlaw;
+};
 
+const DisplayOutlaws = (props) => {
+  const { act, data } = useBackend<Data>();
+  const { outlaws } = data;
+
+}
+
+const OutlawPoster = (props: WantedPosterProps) =>{
+  const { outlaw } = props;
+
+}
+
+export const WantedPoster = (props) => {
+  const { data } = useBackend<Data>();
+  const { outlaw_power, outlaws, requested_outlaws } = data;
+
+  return (
+    <Window
+      title="Language Menu"
+      width={600}
+      height={600}
+    >
+      <Window.Content>
+        <Section
+          scrollable
+          fill
+        >
+          <Table>
+              {<DisplayOutlaws/>}
+          </Table>
+        </Section>
+      </Window.Content>
+    </Window>
+  );
+};
