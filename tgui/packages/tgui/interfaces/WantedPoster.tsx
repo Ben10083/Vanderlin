@@ -30,12 +30,17 @@ const DisplayOutlaws = (props) => {
   const { act, data } = useBackend<Data>();
   const { outlaws } = data;
 
-}
+  return(
+    <Table>
+
+    </Table>
+  );
+};
 
 const OutlawPoster = (props: WantedPosterProps) =>{
   const { outlaw } = props;
 
-}
+};
 
 export const WantedPoster = (props) => {
   const { data } = useBackend<Data>();
@@ -52,9 +57,7 @@ export const WantedPoster = (props) => {
           scrollable
           fill
         >
-          <Table>
-              {<DisplayOutlaws/>}
-          </Table>
+          DisplayOutlaws
         </Section>
       </Window.Content>
     </Window>
