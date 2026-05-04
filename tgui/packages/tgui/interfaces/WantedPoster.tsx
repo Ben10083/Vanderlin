@@ -1,6 +1,6 @@
 import { useBackend } from '../backend';
 import { useLocalState } from '../backend';
-import { Box, Button, DmIcon, Icon, Input, Section, Stack, Tooltip } from 'tgui-core/components';
+import { Box, Button, DmIcon, Icon, Input, Section, Table, Stack, Tooltip } from 'tgui-core/components';
 import { Window } from '../layouts';
 
 type Outlaw = {
