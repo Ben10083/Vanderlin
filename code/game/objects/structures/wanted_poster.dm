@@ -62,7 +62,7 @@
 		to_chat(human, span_warning("How are you going to sketch an outlaw on something that has already been written on?"))
 		return
 
-	//check if we have something to write on
+	// Check if we have something to write on
 	var/has_writer = FALSE
 	for(var/obj/item in human.held_items) // tried to have this done differently, but didnt work so doing it this way
 		if(istype(item, /obj/item/natural/feather) || istype(item, /obj/item/natural/thorn))
@@ -248,6 +248,7 @@
 				outlaws += list(list(
 					"name" = outlaw.real_name,
 					"icon" = credit_icon
+					"reason" = GLOB.outlawed_players[outlaw.real_name]
 				))
 
 	if(!length(outlaws))
