@@ -33,10 +33,21 @@ type RequestPosterProps = {
 const DisplayOutlaws = (props) => {
   const { act, data } = useBackend<Data>();
   const { outlaws } = data;
-
+  // use modulo (%) to later have it so for every 3, we add a new row.
   return(
     <Table>
-
+      <Table.Row>
+        for (const outlaw of outlaws) {
+          <Table.Cell>
+            <Table.Row>
+              (outlaw.name)
+            </Table.Row>
+            <Table.Row>
+              (outlaw.reason)
+            </Table.Row>
+          </Table.Cell>
+        }
+      </Table.Row>
     </Table>
   );
 };
@@ -48,11 +59,11 @@ const OutlawPoster = (props: WantedPosterProps) =>{
 
 export const WantedPoster = (props) => {
   const { data } = useBackend<Data>();
-  const { outlaw_power, outlaws, requested_outlaws } = data;
+  const { outlaw_power, outlaws = [], requested_outlaws = []} = data;
 
   return (
     <Window
-      title="Language Menu"
+      title="Wanted Poster"
       width={600}
       height={600}
     >
@@ -61,7 +72,7 @@ export const WantedPoster = (props) => {
           scrollable
           fill
         >
-          DisplayOutlaws
+          {DisplayOutlaws(props)}
         </Section>
       </Window.Content>
     </Window>
