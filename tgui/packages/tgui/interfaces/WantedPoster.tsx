@@ -43,7 +43,7 @@ const DisplayOutlaws = (props) => {
               (outlaw.name)
             </Table.Row>
             <Table.Row>
-              (outlaw.reason)
+              DEAD OR ALIVE
             </Table.Row>
           </Table.Cell>
         }
