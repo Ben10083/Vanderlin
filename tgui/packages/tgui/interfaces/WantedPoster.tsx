@@ -32,23 +32,17 @@ type RequestPosterProps = {
 
 const DisplayOutlaws = (props) => {
   const { act, data } = useBackend<Data>();
-  const { outlaws } = data;
+  const { outlaws = [] } = data;
   // use modulo (%) to later have it so for every 3, we add a new row.
   return(
-    <Table>
-      <Table.Row>
-        for (const outlaw of outlaws) {
-          <Table.Cell>
-            <Table.Row>
-              (outlaw.name)
-            </Table.Row>
-            <Table.Row>
-              DEAD OR ALIVE
-            </Table.Row>
-          </Table.Cell>
-        }
-      </Table.Row>
-    </Table>
+    {outlaws.map((outlaw, outlawIdx) => (
+      <Box style={{ flex: 1, height: '100%', overflow: 'visible', display: 'flex', flexDirection: 'column', background: 'orange' }}>
+        <div style={{text-align: 'center'}}>
+          (outlaw.name)
+          DEAD OR ALIVE
+        </div>
+      </Box>
+    ))}
   );
 };
 
@@ -72,7 +66,7 @@ export const WantedPoster = (props) => {
           scrollable
           fill
         >
-          {DisplayOutlaws(props)}
+          {DisplayOutlaws(prop = outlaws)}
         </Section>
       </Window.Content>
     </Window>
