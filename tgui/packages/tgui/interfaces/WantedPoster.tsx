@@ -35,14 +35,14 @@ const DisplayOutlaws = (props) => {
   const { outlaws = [] } = data;
   // use modulo (%) to later have it so for every 3, we add a new row.
   return(
-    {outlaws.map((outlaw, outlawIdx) => (
-      <Box style={{ flex: 1, height: '100%', overflow: 'visible', display: 'flex', flexDirection: 'column', background: 'orange' }}>
-        <div style={{text-align: 'center'}}>
+    <Box style={{ flex: 1, height: '100%', overflow: 'visible', display: 'flex', flexDirection: 'column'}}>
+      {outlaws.map((outlaw, outlawIdx) => (
+        <div style={{text-align: 'center', background: 'orange'}}>
           (outlaw.name)
           DEAD OR ALIVE
         </div>
-      </Box>
     ))}
+    </Box>
   );
 };
 
