@@ -6,5 +6,6 @@ GLOBAL_LIST_EMPTY(heretical_players)
 GLOBAL_LIST_EMPTY(inquis_suspect_players)
 /// Associative list of players that have been declared an Outlaw, takes [real_name] = crime
 GLOBAL_LIST_EMPTY(outlawed_players)
+GLOBAL_LIST_EMPTY(wanted_photos)
 /// Associative list of players that were requested to be declared an Outlaw, takes [realname] = list(crime, requester)
 GLOBAL_LIST_EMPTY(outlaw_requested_players)

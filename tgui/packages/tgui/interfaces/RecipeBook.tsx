@@ -1,6 +1,6 @@
 import { useBackend } from '../backend';
 import { useLocalState } from '../backend';
-import { Box, Button, DmIcon, Icon, Input, Stack, Tooltip } from 'tgui-core/components';
+import { Box, DmIcon, Icon, Input } from 'tgui-core/components';
 import { Window } from '../layouts';
 
 interface IconData {

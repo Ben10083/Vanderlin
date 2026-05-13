@@ -353,26 +353,28 @@ GLOBAL_LIST_EMPTY(roundstart_court_agents)
 		playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 		reset_mode()
 		return FALSE
-	var/found = FALSE
+
+	var/mob/living/carbon/human/outlaw
 	for(var/mob/living/carbon/human/to_be_outlawed in GLOB.human_list)
-		if(to_be_outlawed.real_name == message)
-			found = TRUE
 		if(to_be_outlawed.job == "Faceless One")
 			say("Who? That person doesn't exist!")
 			playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 			reset_mode()
 			return FALSE
-	if(!found)
+		if(to_be_outlawed.real_name == message)
+			outlaw = to_be_outlawed
+			break
+	if(!outlaw)
 		say("That person doesn't exist!")
 		playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 		reset_mode()
 		return FALSE
 	var/crimes = tgui_input_text(user, "What is the reason they are outlawed, leave blank for 'General Crimes'", "Outlaw's Crimes", max_length = 75)
 	if(crimes)
-		GLOB.outlawed_players[message] = crimes
+		add_outlaw(outlaw.client, outlaw.real_name, crimes)
 		priority_announce("For [crimes], [message] has been declared an outlaw and must be captured or slain.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
 	else
-		GLOB.outlawed_players[message] = "General Crimes"
+		add_outlaw(outlaw.client, outlaw.real_name, "General Crimes")
 		priority_announce("[message] has been declared an outlaw and must be captured or slain.", "[user.real_name], The [user.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
 	reset_mode()
 	return TRUE

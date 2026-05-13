@@ -6,6 +6,14 @@
 /// Can declare someone outlawed and approve requests
 #define FULL_OUTLAW_POWER 2
 
+/// Proc to add an entry to `outlawed_players`, generating a photo for wanted posters if missing
+proc/add_outlaw(outlaw_client, outlaw_name, crime)
+	if(!GLOB.wanted_photo[outlaw_name])
+		SScrediticons.generate_wanted_photo(outlaw_client)
+	GLOB.outlawed_players[outlaw_name] = crime
+
+/// TODO VARIANT FOR REQUESTED OUTLAWS (this should be only source, so can probably make it a proc under wantedposter instead of global)
+
 /// Wanted Poster, displays players that have been declared an Outlaw
 /// Can be used by some Garrison roles to declare/request declaring new Outlaws
 /obj/structure/fluff/walldeco/wantedposter
@@ -13,6 +21,8 @@
 	desc = "A list of the worst scoundrels this realm has to offer along with their face sketches."
 	icon_state = "wanted1"
 	layer = BELOW_MOB_LAYER
+	var/current_menu = "display_outlaws"
+	var/ui_main_user
 	SET_BASE_PIXEL(0, 32)
 
 /obj/structure/fluff/walldeco/wantedposter/r
@@ -31,6 +41,8 @@
 	if(ishuman(user))
 		if(user.Adjacent(src))
 			var/mob/living/carbon/human/human_user = user
+			if(!ui_main_user)
+				ui_main_user = human_user
 			ui_interact(user)
 		else
 			to_chat(user, span_warning("I need to get closer to see the scoundrels' faces!"))
@@ -44,6 +56,7 @@
 
 /obj/structure/fluff/walldeco/wantedposter/ui_data(mob/living/carbon/human/user)
 	var/list/data = list()
+	data["current_menu"] = current_menu
 	// we check if they are a Human to be able to open UI, we can assume they are one.
 	data["outlaw_power"] = determine_outlaw_power(user)
 
@@ -51,13 +64,13 @@
 	data["outlaws"] = list()
 	for(var/mob/living/carbon/human/outlaw in GLOB.player_list) // player_list as `get_credit_icon()` requires a player anyways
 		if(GLOB.outlawed_players?[outlaw.real_name])
-			var/icon/credit_icon = SScrediticons.get_credit_icon(outlaw, TRUE)
+		var/icon/credit_icon = SScrediticons.get_credit_icon(outlaw, TRUE)
 			if(credit_icon)
 				var/list/outlaw_data = list()
 				outlaw_data["name"] = outlaw.real_name
-				outlaw_data["icon"] = credit_icon
+				outlaw_data["icon"] = icon2html(credit_icon, user.client, sourceonly = TRUE)
 				outlaw_data["reason"] = GLOB.outlawed_players[outlaw.real_name]
-
+				message_admins("[outlaw.real_name] added")
 				UNTYPED_LIST_ADD(data["outlaws"], outlaw_data)
 
 
@@ -69,11 +82,16 @@
 			if(credit_icon)
 				var/list/requested_outlaw_data = list()
 				requested_outlaw_data["name"] = potential_outlaw.real_name
-				requested_outlaw_data["icon"] = credit_icon
+				requested_outlaw_data["icon"] = icon2html(credit_icon, user.client, sourceonly = TRUE)
 				requested_outlaw_data["reason"] = GLOB.outlaw_requested_players[potential_outlaw.real_name][1] // Remember, outlaw_requested_players is a list(reason, requestee)
 				requested_outlaw_data["requestee"] = GLOB.outlaw_requested_players[potential_outlaw.real_name][2]
 
 				UNTYPED_LIST_ADD(data["requested_outlaws"], requested_outlaw_data)
+
+/obj/structure/fluff/walldeco/wantedposter/ui_close(mob/user)
+	. = ..()
+	if(ui_main_user && (user == ui_main_user))
+		current_menu = "display_outlaws"
 
 /obj/structure/fluff/walldeco/wantedposter/attackby(obj/item/P, mob/user, list/modifiers)
 	if(istype(P, /obj/item/paper) && ishuman(user))
@@ -147,7 +165,7 @@
 		qdel(paper)
 
 		if(outlaw_power == FULL_OUTLAW_POWER) // Declare them outlaw
-			GLOB.outlawed_players[possible_outlaw.real_name] = crimes
+			add_outlaw(possible_outlaw.client, possible_outlaw.real_name, crimes)
 
 			if(crimes != "General Crimes")
 				priority_announce("For [crimes], [possible_outlaw.real_name] has been declared an outlaw and must be captured or slain.", "[human.real_name], The [human.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
@@ -248,7 +266,14 @@
 /obj/structure/fluff/walldeco/wantedposter/proc/approve_request(key, mob/living/carbon/human/approver)
 	var/list/outlaw_entry = GLOB.outlaw_requested_players[key]
 	var/crimes = outlaw_entry[1]
-	GLOB.outlawed_players[key] = crimes
+
+	var/mob/living/carbon/human/outlaw
+	for(var/mob/living/carbon/human/to_be_outlawed in GLOB.human_list)
+		if(to_be_outlawed.real_name == outlaw_entry)
+			outlaw = to_be_outlawed
+			break
+
+	add_outlaw(outlaw.client, outlaw.real_name, crimes)
 
 	if(crimes != "General Crimes")
 		priority_announce("For [crimes], [key] has been declared an outlaw and must be captured or slain.", "[approver.real_name], The [approver.get_role_title()] Decrees", 'sound/misc/alert.ogg', "Captain")
@@ -415,3 +440,27 @@
 #undef NO_OUTLAW_POWER
 #undef LIMITED_OUTLAW_POWER
 #undef FULL_OUTLAW_POWER
+
+
+/datum/controller/subsystem/crediticons/proc/generate_wanted_photo(client/actor_client)
+	if(!actor_client)
+		return
+	var/mob/living/carbon/human/actor = actor_client.mob
+	if(!istype(actor) || QDELETED(actor))
+		return
+	var/datum/mind/actor_mind = actor.mind
+	var/datum/job/job = actor_mind.assigned_role
+	var/datum/preferences/preferences = actor_client.prefs
+	if(!preferences)
+		return
+
+	var/thename = "[actor.real_name]"
+
+	GLOB.wanted_photo[thename] = list()
+	var/icon/rendered_icon = get_flat_human_icon(null, job, preferences, DUMMY_HUMAN_SLOT_MANIFEST, list(SOUTH))
+	if(rendered_icon)
+		var/icon/female_s = icon("icon"='icons/mob/clothing/under/masking_helpers.dmi', "icon_state"="credits")
+		rendered_icon.Blend(female_s, ICON_MULTIPLY)
+		rendered_icon.Scale(96,96)
+		GLOB.wanted_photo[thename]["icon"] = rendered_icon
+		GLOB.wanted_photo[thename]["vc"] = actor.voice_color

@@ -453,7 +453,7 @@
 	if(!crimes)
 		crimes = "General Crimes"
 
-	GLOB.outlawed_players[H.real_name] = crimes
+	add_outlaw(H.client, H.real_name, crimes)
 	to_chat(H, span_boldwarning("Whether for crimes I did or was accused of, I have been declared an outlaw!"))
 
 /datum/quirk/vice/suspicion
