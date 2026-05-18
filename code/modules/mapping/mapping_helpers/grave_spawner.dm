@@ -141,6 +141,7 @@
 		<br>\
 		<br>\
 		<span class='italics'>[pick(custom_messages)]</span>"
+
 	//Update Grave
 	grave.no_devotion = TRUE // No devotion from these graves
 	grave.update_quality()
