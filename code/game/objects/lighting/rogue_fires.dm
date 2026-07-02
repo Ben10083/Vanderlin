@@ -67,6 +67,10 @@
 	icon_state = "churchfire1"
 	base_state = "churchfire"
 
+/// Special variant for mapping, same as parent but used for offerings. SHOULD BE IN EVERY TOWN CHURCH
+/obj/machinery/light/fueled/firebowl/church/sermon
+
+
 /obj/machinery/light/fueled/firebowl/church/magic
 	name = "magical bonfire"
 	color = "#6ab2ee"
