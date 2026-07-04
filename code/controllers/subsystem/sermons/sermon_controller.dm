@@ -7,6 +7,10 @@
 //       [] If Sermon active, ability to join active audience. If leave area, leave audience and active audience
 //    [] Sermon Datum
 //    [] "God Profiles" for Sermons (A datum for the datum to cover variations for Gods) (WE DO IT FOR ALL TEN DESPITE ONLY ASTRATA AND EORA)
+//       [X] Framework
+//       [] Overlays for crosses
+//       [] Messages for prayer and sacrifice (audience + host)
+//       [] MUSIC
 //    [] Tiers for sermon
 //    [] Win/Lose
 //       [] Tiers for Win/Lose
@@ -64,21 +68,13 @@
 //       [] Alternative, Eoran buds offered by the Couple
 
 //TODO CHANGE
-SUBSYSTEM_DEF(sermons)
-	name = "Death Arena"
+SUBSYSTEM_DEF(sermon_controller)
+	name = "Sermon Controller"
 	wait = 2 SECONDS
 	flags = SS_NO_INIT
 	priority = 1
 
-	var/turf/first_spawn
-	var/turf/second_spawn
-	var/list/waiting_fighters = list()
-	///this is just so I can easily reference the head later
-	var/list/fighters_heads = list()
-	var/list/fighters = list()
-	///we check if spirits here aswell
-	var/list/tollless_clients = list()
-	var/fighting = FALSE
-	var/fight_force_end = null
+	var/area/assigned_area
 
-/datum/controller/subsystem/sermons/fire(resumed = 0)
+
+/datum/controller/subsystem/sermon_controller/fire(resumed = 0)
