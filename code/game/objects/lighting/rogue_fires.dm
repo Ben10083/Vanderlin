@@ -69,7 +69,7 @@
 
 /// Special variant for mapping, same as parent but used for offerings. SHOULD BE IN EVERY TOWN CHURCH
 /obj/machinery/light/fueled/firebowl/church/sermon
-
+	resistance_flags = INDESTRUCTIBLE  // There is no way to rebuild a firebowl/church, if this gets destroyed the system would die. If firebowls become constructable it may be best to remove this object entirely
 
 /obj/machinery/light/fueled/firebowl/church/magic
 	name = "magical bonfire"
